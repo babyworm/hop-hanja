@@ -43,11 +43,27 @@ const WEBKIT_GRAPHICS_FALLBACK_DISTRO_FAMILIES: &[&str] = &[
 ];
 const WEBKIT_GRAPHICS_FALLBACK_WAYLAND_DISTRO_FAMILIES: &[&str] = &["fedora", "rhel", "redhat"];
 
+#[cfg(target_os = "linux")]
+pub fn enable_inline_preedit(window: &tauri::WebviewWindow) {
+    use webkit2gtk::{InputMethodContextExt, WebViewExt};
+
+    // Wry disables GTK preedit. The editor needs composition updates to
+    // display the current syllable at its document caret (#124).
+    if let Err(error) = window.with_webview(|webview| {
+        if let Some(context) = webview.inner().input_method_context() {
+            context.set_enable_preedit(true);
+        }
+    }) {
+        eprintln!("[ime] 인라인 조합 설정 실패: {error}");
+    }
+}
+
 pub fn apply_linux_runtime_fixes() {
     apply_linux_runtime_fixes_for_os_release(read_os_release().as_deref());
 }
 
 fn apply_linux_runtime_fixes_for_os_release(os_release: Option<&str>) {
+    apply_display_backend_fallback();
     apply_webkit_graphics_fallbacks(os_release);
 
     if !is_appimage_runtime() {
@@ -56,6 +72,23 @@ fn apply_linux_runtime_fixes_for_os_release(os_release: Option<&str>) {
 
     let host_cache_candidates = host_cache_candidate_paths();
     apply_appimage_runtime_fixes_with_host_caches(&host_cache_candidates);
+}
+
+fn apply_display_backend_fallback() {
+    if env::var_os("GDK_BACKEND").is_some() || !env_var_is_nonempty("DISPLAY") {
+        return;
+    }
+    let kde = env::var_os("XDG_CURRENT_DESKTOP").is_some_and(|desktop| {
+        desktop
+            .to_string_lossy()
+            .split(':')
+            .any(|name| name.eq_ignore_ascii_case("KDE"))
+    });
+    if is_appimage_runtime() || (kde && is_wayland_session()) {
+        // Preserve the AppImage X11 default. GTK3 Wayland can also allocate
+        // oversized buffers with mixed monitor scales on KDE (#124).
+        env::set_var("GDK_BACKEND", "x11");
+    }
 }
 
 fn apply_webkit_graphics_fallbacks(os_release: Option<&str>) {

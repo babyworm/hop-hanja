@@ -13,6 +13,11 @@ const messageMock = vi.hoisted(() => vi.fn());
 const fsOpenMock = vi.hoisted(() => vi.fn());
 const statMock = vi.hoisted(() => vi.fn());
 const removeMock = vi.hoisted(() => vi.fn());
+const setTitleMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@tauri-apps/api/window', () => ({
+  getCurrentWindow: () => ({ setTitle: setTitleMock }),
+}));
 
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: invokeMock,
@@ -64,6 +69,7 @@ vi.mock('@/core/wasm-bridge', () => ({
 describe('TauriBridge', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    setTitleMock.mockReset().mockResolvedValue(undefined);
     (globalThis as { document?: { title: string } }).document = { title: '' };
     statMock.mockResolvedValue({ size: 3, isFile: true, mtime: new Date('2026-04-23T00:00:00.000Z') });
     removeMock.mockResolvedValue(undefined);
@@ -108,6 +114,7 @@ describe('TauriBridge', () => {
       message: 'opened.hwp — 2페이지',
     });
     expect(document.title).toBe('opened.hwp - HOP');
+    expect(setTitleMock).toHaveBeenLastCalledWith(document.title);
     expect(bridge.hasUnsavedChanges()).toBe(false);
   });
 
@@ -340,6 +347,7 @@ describe('TauriBridge', () => {
 
     expect(invokeMock).toHaveBeenLastCalledWith('close_document', { docId: 'old-doc' });
     expect(document.title).toBe('new.hwp - HOP');
+    expect(setTitleMock).toHaveBeenLastCalledWith(document.title);
   });
 
   it('opens a document selected from the Tauri dialog', async () => {
@@ -502,6 +510,7 @@ describe('TauriBridge', () => {
 
     expect(bridge.hasUnsavedChanges()).toBe(true);
     expect(document.title).toBe('• source.hwp - HOP');
+    expect(setTitleMock).toHaveBeenLastCalledWith(document.title);
   });
 
   it('proxies updater commands through the Tauri bridge', async () => {
@@ -627,6 +636,7 @@ describe('TauriBridge', () => {
     expect(result?.revision).toBe(6);
     expect(bridge.hasUnsavedChanges()).toBe(false);
     expect(document.title).toBe('report.hwp - HOP');
+    expect(setTitleMock).toHaveBeenLastCalledWith(document.title);
   });
 
   it('writes large staged saves in multiple fs chunks', async () => {

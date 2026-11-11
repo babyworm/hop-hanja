@@ -1,24 +1,23 @@
 {
   "schemaVersion": 1,
   "upstream": {
-    "version": "0.8.7",
-    "commit": "1a76570e833917d15817415a53c09ad61ab3203f",
+    "version": "0.9.0",
+    "commit": "c9095c5f67632e6721e800ccc7fb43ea49d26682",
     "counterparts": {
-      "core/font-loader": "64a7f5fa58f0aa4638ac0665875a02eb841e6225bf53b54a7e5d3aaca827cef1",
-      "core/local-fonts": "78228d2db58ea6467271bfe3bd5018ae7fb16b17480cc23f453cd0dc186fe1c8",
-      "command/shortcut-map": "a5c28535469c3d076dfe45f7ccf783a5227b48f1600c67b993823f2e1caf5ad8",
-      "command/commands/edit": "30a4708bd9b688c0d91104c3a3fdb41409c3adf07be82f1066e48c991deb5ec6",
-      "command/commands/file": "9fb77378cdf84564579b13348b0d99f59874560666a983b2e0d7fa782baf91d9",
+      "core/font-loader": "3c503a5328954fb1fdf2fbc1649e75b920c3252e9212c978053aa55087a66814",
+      "core/local-fonts": "37f51713e87eece3bcee9fc63e683dfbc09b970dd114850fcf23a961cf726e39",
+      "command/shortcut-map": "79717567371e1de04d84b247089419a1f0210492c6c3323e24888b6b6b2f4593",
+      "command/commands/edit": "ba96c46b1d8d0a38397de3c6f63ecf36473c8752d1c79dd6e9c5509791dbde3e",
+      "command/commands/file": "c38806f48d907b55f64a0e1dec59ed163ac8941329b2f8ae98d02e18a3fe0185",
       "ui/about-dialog": "fb42625816fe8bbaac2de2c7e8b8044fa592374a89c3e312ce2cb76b58cf8d63",
-      "ui/dialog": "f45b9c7b5980e70bc6cd97ecf7c7c671441a16ad7d67638b1987e7bb8c7a2175",
-      "ui/toolbar": "f80b61e04ddd36d64d08a4f06c364fbef174400e2ecec7186c4ae145bb3d4bb9"
+      "ui/toolbar": "c002d7d96f9dde577328f476ff9d23ebe436a33cf38602dc6ac6795896987467"
     },
     "privateInputs": {
-      "engine/command": "cfbc282324d2de90d3ae51cc82294a14685237877b14a3435f5074b6dd3e341f",
-      "engine/cursor": "42e7aaaea9e4d0da0be8dee9c419c11aa0e241e410e41afc1bc148caa2b28d97",
-      "engine/history": "8695835288ae7970b8a3dd423029e8599f1b3a314cecbd259232d106980d9588",
-      "engine/input-handler": "9bbba9420b2a8d4c3630a1797976bf9e65b9b1b4a67c608f305e1f5a873c31ce",
-      "styles/dialogs.css": "9969e364535a2ffbf9fd9a9732288737f37821a212e19a14ba4c779d771b15d8",
+      "engine/command": "84b1e337ad095dba22c58107bf5795bd45bed83564328fb1f18331142666b92d",
+      "engine/cursor": "cf9f71bad5b9ec16e4b960ef02a2d913796c66ccadcd76e9c8a9b6e774d1ed58",
+      "engine/history": "ad9d9298854633b37e90567aa52c2f86f06c2e8dc54b8027252353d07be6b435",
+      "engine/input-handler": "224be1c8a887ae3d054b5bbf7530d930ec78298424bef732904b5d49a668aef2",
+      "styles/dialogs.css": "1437203bb7fd7d59bafcc019dbd91de8bb17877cb0c153526a6aaf342932e1d1",
       "styles/menu-bar.css": "85379394c8fe1eff48fac8ecf4f808d2c1c6ddb93887642040db6d6a92b43a10",
       "ui/context-menu": "5ab0dee205a542a9c861a3512cf11fb55f743d679ef07ecb7e3662a09826460c"
     },
@@ -96,11 +95,6 @@
       "id": "ui/custom-select",
       "strategy": "contribution",
       "reason": "Provides HOP desktop select styling and interaction."
-    },
-    {
-      "id": "ui/dialog",
-      "strategy": "fork",
-      "reason": "Preserves HOP modal focus and desktop interaction behavior."
     },
     {
       "id": "ui/home-screen",

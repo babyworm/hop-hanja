@@ -1,5 +1,6 @@
 import type { DocumentInfo } from '@/upstream/core';
 import { remove, stat } from '@tauri-apps/plugin-fs';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import { finiteFileSize, readFileInChunks, writeFileInChunks } from './chunked-fs';
 import { loadDocumentForOpen } from './document-open';
 import { PrimaryDocumentWasmBridge } from './document-wasm-bridge';
@@ -587,7 +588,12 @@ export class TauriBridge extends PrimaryDocumentWasmBridge implements DesktopBri
   }
 
   private updateDocumentTitle(): void {
-    const name = this.docId ? this.fileName || '문서' : 'HOP';
-    document.title = `${this.dirty ? '• ' : ''}${name} - HOP`;
+    const title = this.docId
+      ? `${this.dirty ? '• ' : ''}${this.fileName || '문서'} - HOP`
+      : 'HOP';
+    document.title = title;
+    void getCurrentWindow().setTitle(title).catch(() => {
+      console.warn('[TauriBridge] native window title update failed');
+    });
   }
 }

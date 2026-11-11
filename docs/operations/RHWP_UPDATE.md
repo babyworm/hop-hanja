@@ -10,7 +10,7 @@
 * `third_party/rhwp` submodule pointer
 * `config/rhwp-upstream.json`의 버전, 태그, 커밋, Rust 및 WASM 생성기 기준선
 * `apps/studio-host/vendor/rhwp-core`의 WASM package와 provenance
-* desktop과 Quick Look의 HOP-owned `[patch]` 선언과 `Cargo.lock`
+* desktop과 Quick Look의 Cargo manifest 및 `Cargo.lock`
 * upstream에서 미러링하는 studio asset
 * `config/rhwp-studio-overrides.json`의 upstream counterpart와 private input hash
 
@@ -32,7 +32,7 @@
 
    ```sh
    git submodule update --init --recursive
-   pnpm install --frozen-lockfile --lockfile=true
+   pnpm install --frozen-lockfile
    pnpm upstream:verify
    ```
 
@@ -73,7 +73,8 @@ git diff -- apps/studio-host/vendor/rhwp-core/PROVENANCE.json
 다음을 확인한다.
 
 * tag, commit, Cargo package, studio package와 vendored WASM 버전이 모두 같다.
-* provenance에는 배포되는 모든 vendor 파일의 byte 수와 SHA-256이 있다.
+* provenance에는 배포되는 모든 vendor 파일의 byte 수와 SHA-256, HOP의 명시적 WASM feature가 있다.
+  upstream 기본 feature는 끈다. PDF 가져오기 전용 codec을 포함하지 않으며 HWP/HWPX와 PDF 내보내기는 유지한다.
 * 두 Cargo manifest의 patch Git source/revision 또는 upstream vendor path/version과 lockfile의 `rhwp`가 같은 새 버전을 가리킨다. upstream이
   patch 저장소를 옮겼다면 updater가 이전 계약에서 새 계약으로 두 manifest를 함께 전환해야 한다.
 * updater가 출력한 `Review changed studio inputs`의 각 파일을 upstream diff와 비교한다.
@@ -90,6 +91,14 @@ upstream이 `svg2pdf`를 vendor path로 제공하면 두 native manifest는 각 
 package version을 기록한다. 소스는 upstream commit으로 고정하며 검증기는 checkout의
 tracked 변경·untracked 추가, 경로 이탈, lockfile의 단일 local package를 확인한다. Git patch를 사용하는 이전
 기준선은 기존 source/revision 검증을 유지한다.
+
+rhwp v0.9.0부터 `rhwp-svg2pdf`를 직접 vendoring한다. updater는 기존 `svg2pdf` registry
+patch를 제거한다. desktop과 Quick Look은 공유 Rust adapter를 통해 upstream PDF 생성기를
+사용하며 Quick Look은 별도의 PDF 조립기나 직접 인코더 의존성을 두지 않는다.
+패키지·경로·버전의 기준은 고정 upstream manifest다. 별도 JSON 설정에 복제하지 않는다.
+검증기는 두 native lockfile이 이 기준을 따르고 기존 registry `svg2pdf`가 남지 않았는지
+확인한다. vendor source의 신뢰 기준은 고정 upstream commit과 clean checkout이다.
+TOML은 parser로 읽으며, 갱신할 선언이 바뀐 경우에만 manifest를 재작성한다.
 
 각 변경된 counterpart는 다음 순서로 분류한다.
 
@@ -112,7 +121,7 @@ upstream이 요구하는 Rust toolchain은 `config/rhwp-upstream.json`의 `rustT
 아래 예시의 `<toolchain>`을 그 값으로 바꾼다.
 
 ```sh
-pnpm install --frozen-lockfile --lockfile=true
+pnpm install --frozen-lockfile
 pnpm upstream:verify
 RUSTUP_TOOLCHAIN=<toolchain> pnpm test
 RUSTUP_TOOLCHAIN=<toolchain> pnpm run clippy:desktop
