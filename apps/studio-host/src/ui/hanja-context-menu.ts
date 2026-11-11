@@ -4,7 +4,6 @@ import type {
   CommandServices,
 } from '@/upstream/commands';
 import { ContextMenu } from '@/upstream/ui';
-import type { ContextMenuItem } from '@/upstream/ui';
 import {
   isHanjaConversionContextEditable,
 } from '../command/commands/hanja';
@@ -14,6 +13,8 @@ import {
   type HanjaConversionDirection,
   type HanjaConversionSource,
 } from '../hanja/editor-text-range';
+
+type ContextMenuItem = Parameters<ContextMenu['show']>[2][number];
 
 const CONVERT_HANJA_COMMAND = 'edit:convert-hanja';
 const CONTEXT_SUBMENU_MIN_WIDTH = 180;

@@ -12,15 +12,6 @@
       "ui/about-dialog": "fb42625816fe8bbaac2de2c7e8b8044fa592374a89c3e312ce2cb76b58cf8d63",
       "ui/toolbar": "c002d7d96f9dde577328f476ff9d23ebe436a33cf38602dc6ac6795896987467"
     },
-    "privateInputs": {
-      "engine/command": "84b1e337ad095dba22c58107bf5795bd45bed83564328fb1f18331142666b92d",
-      "engine/cursor": "cf9f71bad5b9ec16e4b960ef02a2d913796c66ccadcd76e9c8a9b6e774d1ed58",
-      "engine/history": "ad9d9298854633b37e90567aa52c2f86f06c2e8dc54b8027252353d07be6b435",
-      "engine/input-handler": "224be1c8a887ae3d054b5bbf7530d930ec78298424bef732904b5d49a668aef2",
-      "styles/dialogs.css": "1437203bb7fd7d59bafcc019dbd91de8bb17877cb0c153526a6aaf342932e1d1",
-      "styles/menu-bar.css": "85379394c8fe1eff48fac8ecf4f808d2c1c6ddb93887642040db6d6a92b43a10",
-      "ui/context-menu": "5ab0dee205a542a9c861a3512cf11fb55f743d679ef07ecb7e3662a09826460c"
-    },
     "assets": {
       "public/images/icon_small_ko_dark.svg": "9d02ea0b8c1d399a89290d97613759826f19f3e3f392b6d79dcf6109e7e15fa6"
     }

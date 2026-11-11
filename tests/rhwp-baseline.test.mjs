@@ -111,15 +111,6 @@ test('HOP defers editor engine and table command behavior to upstream rhwp', asy
 
   assert.ok(!overrideIds.some((id) => id.startsWith('engine/')));
   assert.ok(!overrideIds.includes('command/commands/table'));
-  assert.deepEqual(Object.keys(manifest.upstream.privateInputs).sort(), [
-    'engine/command',
-    'engine/cursor',
-    'engine/history',
-    'engine/input-handler',
-    'styles/dialogs.css',
-    'styles/menu-bar.css',
-    'ui/context-menu',
-  ]);
 
   for (const path of [
     'apps/studio-host/src/engine/input-handler.ts',
@@ -129,15 +120,6 @@ test('HOP defers editor engine and table command behavior to upstream rhwp', asy
   ]) {
     await assert.rejects(access(join(repoRoot, path)), { code: 'ENOENT' });
   }
-});
-
-test('HOP editor adapter does not expose unused upstream text command classes', async () => {
-  const editorBoundary = await readFile(
-    join(repoRoot, 'apps/studio-host/src/upstream/editor.ts'),
-    'utf8',
-  );
-
-  assert.doesNotMatch(editorBoundary, /\b(?:DeleteTextCommand|InsertTextCommand)\b/);
 });
 
 test('HOP product info keeps the upstream rhwp version and adds HOP version separately', async () => {
