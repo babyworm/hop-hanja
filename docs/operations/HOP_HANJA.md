@@ -13,11 +13,13 @@ git clone --recurse-submodules git@github.com:babyworm/hop-hanja.git
 cd hop-hanja
 git remote add upstream https://github.com/golbin/hop.git
 git remote set-url --push upstream no_push://golbin/hop
+git config remote.upstream.tagOpt --no-tags
 git config remote.pushDefault origin
 gh repo set-default babyworm/hop-hanja
 ```
 
 로컬 push 차단은 실수 방지 설정이다. GitHub의 포크 관계와 upstream fetch 기능은 유지한다.
+원본 HOP 태그는 자동으로 가져오지 않아 이 포크의 릴리스 태그와 이름이 충돌하지 않도록 한다.
 원본 변경은 별도 브랜치에서 `git fetch upstream`으로 가져와 검토하고, 포크 테스트를 거쳐 통합한다.
 `third_party/rhwp`의 갱신은 기존 `RHWP_UPDATE.md` 절차를 따른다.
 
