@@ -33,7 +33,7 @@ HOP는 HWP/HWPX 문서를 보고 편집할 수 있는 오픈소스 macOS, Window
 포크 배포본은 [HOP Hanja Releases](https://github.com/babyworm/hop-hanja/releases)에서 제공합니다.
 현재 배포 대상은 Windows x64이며, macOS와 Linux는 필요할 때 별도로 빌드합니다.
 
-* [Windows x64 설치 파일 (.msi)](https://github.com/babyworm/hop-hanja/releases/latest/download/HOP-windows-x64.msi)
+* [Windows x64 설치 파일 (.exe)](https://github.com/babyworm/hop-hanja/releases/latest/download/HOP-windows-x64.exe)
 
 포크의 자동 업데이트는 꺼져 있습니다. 새 버전은 이 저장소의 릴리스에서 직접 설치합니다.
 원본 HOP의 Homebrew·AUR 패키지는 이 포크의 배포본이 아닙니다.

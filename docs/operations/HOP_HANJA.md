@@ -38,10 +38,33 @@ Windows 설치 파일은 Authenticode 서명을 적용하지 않으므로 Window
    macOS·Linux 선택은 모두 `false`, `run_tests=true`, `create_release=false`로 지정한다.
 4. 이 workflow의 artifact 생성은 기존 upstream 릴리스의 macOS·updater 서명 요구와 별개다.
    성공한 Windows artifact의 MSI/EXE를 검증하고 SHA-256 목록과 릴리스 노트를 준비한다.
-5. 이 포크의 GitHub Release에 `HOP-windows-x64.msi`와 생성된 `HOP-windows-x64.exe`,
+5. 이 포크의 GitHub Release에 생성된 `HOP-windows-x64.exe`와 MSI가 있으면 `HOP-windows-x64.msi`,
    `SHA256SUMS.txt`, `LICENSE.txt`, `THIRD_PARTY_LICENSES.md`, `HANJA_THIRD_PARTY_NOTICES.md`를 올린다.
    바이너리에도 라이선스 파일과 한자 고지가 포함되어야 한다.
 6. 업로드한 파일을 다시 내려받아 해시를 확인하고, 검증한 설치 범위를 릴리스 노트에 기록한다.
 
 기존 `DESKTOP_RELEASE.md`의 원본 HOP 릴리스 정책은 참고용이다. 이 포크에서 macOS 산출물이나
 자동 업데이트용 `latest.json`을 만들기 위한 목적으로 원본 workflow의 release 모드를 사용하지 않는다.
+
+## GitHub Actions를 실행할 수 없는 경우
+
+저장소와 workflow가 활성 상태인데도 GitHub가 HTTP 422로 dispatch를 거부하면,
+설정 변경을 반복하거나 계정의 지출 제한을 임의로 바꾸지 않는다. `v0.5.4`에서는 이 상태 때문에
+Tauri의 공식 MSVC 교차 빌드 경로로 NSIS 설치 파일을 만들었다. MSI는 Windows 빌드 환경에서만 만든다.
+
+Clang/LLD, `llvm-rc`, NSIS, `cargo-xwin`, Rust 1.93.1의 `x86_64-pc-windows-msvc` target을
+준비한 뒤 고정 태그의 clean tree에서 다음 명령을 실행한다.
+
+```sh
+RUSTUP_TOOLCHAIN=1.93.1 pnpm --filter hop-desktop tauri build --ci \
+  --runner cargo-xwin --target x86_64-pc-windows-msvc \
+  --config '{"bundle":{"targets":["nsis"]}}' -- --locked
+```
+
+Tauri CLI 2.10.1의 Linux 실행 파일은 `--bundles nsis`를 인식하지 않으므로 위와 같이
+bundle target을 config override로 전달한다. 앱 코드나 태그를 바꾸는 설정은 아니다.
+산출물은 `apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis`에 생성된다.
+
+배포 전에 설치 파일을 추출하여 앱 실행 파일과 고지 문서의 해시를 비교하고, Windows에서
+제품 이름·버전과 기동을 확인한다. 빌드 도구와 source commit은 `BUILD_INFO.txt`에 기록한다.
+교차 빌드 자체를 설치·문서 편집·인쇄 GUI 검증으로 간주하지 않는다.
