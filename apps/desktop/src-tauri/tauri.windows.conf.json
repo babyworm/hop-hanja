@@ -1,9 +1,12 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "HOP Hanja",
+  "identifier": "io.github.babyworm.hop-hanja",
   "app": {
     "windows": [
       {
         "label": "main",
-        "title": "HOP",
+        "title": "HOP Hanja",
         "url": "index.html",
         "width": 1280,
         "height": 900,
@@ -12,5 +15,10 @@
         "zoomHotkeysEnabled": true
       }
     ]
+  },
+  "bundle": {
+    "publisher": "Hyun-Gyu Kim",
+    "shortDescription": "HOP fork with Hangul and Hanja conversion",
+    "longDescription": "HOP Hanja is an independently maintained fork of HOP with offline Hangul/Hanja conversion. It opens, edits, saves, and exports HWP/HWPX documents."
   }
 }

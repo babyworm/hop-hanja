@@ -111,6 +111,10 @@ impl UpdateManagerState {
 }
 
 pub fn install_startup_update_check(app: &AppHandle) {
+    if !crate::fork_policy::automatic_updates_enabled(app.config()) {
+        return;
+    }
+
     #[cfg(debug_assertions)]
     {
         let _ = app;

@@ -1,6 +1,7 @@
 mod app_quit;
 mod commands;
 mod font_catalog;
+mod fork_policy;
 #[cfg(target_os = "linux")]
 mod linux_runtime;
 #[cfg(target_os = "macos")]

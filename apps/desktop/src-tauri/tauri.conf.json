@@ -43,6 +43,9 @@
       "../../../assets/logo/favicon.ico"
     ],
     "resources": {
+      "../../../LICENSE": "licenses/LICENSE.txt",
+      "../../../THIRD_PARTY_LICENSES.md": "licenses/THIRD_PARTY_LICENSES.md",
+      "../../studio-host/public/dictionaries/hanja/THIRD_PARTY_NOTICES.md": "licenses/HANJA_THIRD_PARTY_NOTICES.md",
       "../../../third_party/rhwp/ttfs/opensource/NotoSansKR-Regular.ttf": "fonts/pdf/NotoSansKR-Regular.ttf",
       "../../../third_party/rhwp/ttfs/opensource/NotoSansKR-OFL.txt": "fonts/pdf/NotoSansKR-OFL.txt"
     },
@@ -99,9 +102,7 @@
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZGQzA1Qzc3QkQ0ODhFM0YKUldRL2praTlkMXpBL3pTcUFUczdzWFBFSjV3QnBPczhJTy8zMG5OcVhYNi9sbDJtRS9JY2wxN00K",
-      "endpoints": [
-        "https://github.com/golbin/hop/releases/latest/download/latest.json"
-      ],
+      "endpoints": [],
       "windows": {
         "installMode": "passive"
       }
