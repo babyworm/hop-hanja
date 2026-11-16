@@ -10,6 +10,7 @@ import {
   viewCommands,
 } from '@/upstream/commands';
 import { toolbarLabelsCommand } from '../host/toolbar-labels';
+import { languageCommands } from '../host/language';
 import { editCommands } from './commands/edit';
 import { fileCommands } from './commands/file';
 import { hanjaCommands } from './commands/hanja';
@@ -21,7 +22,7 @@ const productionCommandGroups = [
   fileCommands,
   editCommands,
   hanjaCommands,
-  [...viewCommands, toolbarLabelsCommand],
+  [...viewCommands, toolbarLabelsCommand, ...languageCommands],
   formatCommands,
   insertCommands,
   tableCommands,

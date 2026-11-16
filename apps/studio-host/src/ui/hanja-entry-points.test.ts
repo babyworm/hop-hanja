@@ -20,7 +20,7 @@ describe('Hanja conversion entry points', () => {
     expect(characterTable).toBeGreaterThan(-1);
     expect(conversion).toBeGreaterThan(characterTable);
     expect(conversion).toBeLessThan(nextSeparator);
-    expect(html).toContain('<span class="md-label">한글/한자 변환</span>');
+    expect(html).toContain('<span class="md-label" data-i18n="hop.hanja.label">한글/한자 변환</span>');
   });
 
   it('shows both conversion shortcuts in every menu entry', () => {

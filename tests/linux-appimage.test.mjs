@@ -17,10 +17,10 @@ function runLauncher(environmentFor, { fallback = false, workingDirectory = 'cur
   try {
     mkdirSync(join(appDir, 'usr/bin'), { recursive: true });
     if (workingDirectory !== 'current') mkdirSync(join(old, 'usr'), { recursive: true });
-    // A real ELF lets the launcher exercise its loader probe and print only
-    // this test's controlled environment, without starting a WebView.
+    // Bash remains executable after renaming, unlike multicall env binaries.
+    // Its real ELF also exercises the launcher's system-loader probe.
     const executable = join(appDir, 'usr/bin/hop-desktop');
-    copyFileSync('/usr/bin/env', executable);
+    copyFileSync('/bin/bash', executable);
     chmodSync(executable, 0o755);
     if (fallback) {
       copyFileSync(executable, join(appDir, 'AppRun.wrapped'));
@@ -31,9 +31,9 @@ function runLauncher(environmentFor, { fallback = false, workingDirectory = 'cur
     }
     const probe = 'printf "HOP_LAUNCHER_CWD=%s\\0" "$(pwd -P)"; exec env -0';
     const args = workingDirectory === 'removed'
-      ? ['-c', 'rmdir "$1" "$2"; PWD="$HOME" exec bash "$3" /bin/sh -c "$4"',
+      ? ['-c', 'rmdir "$1" "$2"; PWD="$HOME" exec bash "$3" -c "$4"',
         'hop-deleted-cwd', join(old, 'usr'), old, launcher, probe]
-      : [launcher, '/bin/sh', '-c', probe];
+      : [launcher, '-c', probe];
     const output = execFileSync('bash', args, {
       env: { HOME: homedir(), PATH: '/usr/bin:/bin', APPDIR: appDir, ...environmentFor(old, kept) },
       encoding: 'utf8', stdio: 'pipe',
@@ -124,5 +124,10 @@ test('AppImage relaunch recovers when its previous working directory is gone', o
   const { environment } = runLauncher((old) => ({
     GTK_DATA_PREFIX: old, GTK_EXE_PREFIX: `${old}/usr`,
   }), { workingDirectory: 'removed' });
+  assert.equal(environment.HOP_LAUNCHER_CWD, realpathSync(homedir()));
+});
+
+test('system runtime relaunch recovers a removed working directory without GTK prefixes', options, () => {
+  const { environment } = runLauncher(() => ({}), { workingDirectory: 'removed' });
   assert.equal(environment.HOP_LAUNCHER_CWD, realpathSync(homedir()));
 });

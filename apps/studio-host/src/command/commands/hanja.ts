@@ -4,6 +4,7 @@ import {
   type InputHandlerShortcutCaptureState,
 } from '@/upstream/editor';
 import { currentDocumentGeneration } from '../../core/document-generation';
+import { t } from '../../hop-i18n';
 import type { HanjaDictionary } from '../../hanja/hanja-dictionary';
 import {
   createBundledHanjaDictionary,
@@ -37,7 +38,7 @@ let activeConversion: ConversionRun | null = null;
 
 export const hanjaCommands: CommandDef[] = [{
   id: 'edit:convert-hanja',
-  label: '한글/한자 변환',
+  label: t('hop.hanja.label'),
   shortcutLabel: hanjaCommandShortcutLabel(),
   canExecute: isHanjaConversionContextEditable,
   execute: (services, params) => {
